@@ -182,27 +182,33 @@ backend:
 
   - task: "GET /api/analytics/merchants - Merchant performance analytics"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/app/api/[[...path]]/route.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Implemented with mock data. Returns merchant performance with health scores calculated based on churn, growth, and TPV"
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: Retrieved 4 merchants with health scores. Health score calculation working correctly (formula: 100 - churn_rate*2 + monthly_growth*0.5). All performance metrics present and valid."
 
   - task: "GET /api/analytics/verticals - Vertical performance aggregation"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/app/api/[[...path]]/route.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Implemented with mock data. Aggregates data by vertical (Cable/DTH, ISP, Gym/Fitness) with avg churn and growth rates"
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: Retrieved 3 vertical aggregations (Cable/DTH, ISP, Gym/Fitness). All required fields present (name, merchants, subscribers, tpv, avg_churn, avg_growth). Aggregation logic working correctly."
 
   - task: "GET /api/alerts - List risk and fraud alerts"
     implemented: true
