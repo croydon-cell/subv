@@ -122,15 +122,18 @@ backend:
 
   - task: "GET /api/merchants - List all merchants with filters"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/app/api/[[...path]]/route.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Implemented with mock data. Supports filtering by kyc_status and vertical. Returns array of merchants with all details"
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: Retrieved 5 merchants successfully. KYC status filter works correctly (filtered to 4 approved merchants). Vertical filter works correctly (filtered to 2 ISP merchants). All filtering logic is functional."
 
   - task: "GET /api/merchants/:id - Get merchant details by ID"
     implemented: true
