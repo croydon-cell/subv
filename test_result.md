@@ -212,27 +212,33 @@ backend:
 
   - task: "GET /api/alerts - List risk and fraud alerts"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/app/api/[[...path]]/route.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Implemented with mock data. Supports filtering by status and severity. Returns alerts with type, merchant info, and message"
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: Retrieved 4 alerts successfully. Status filter works correctly (filtered to 3 active alerts). Severity filter works correctly (filtered to 2 high severity alerts). All alert data complete with type, merchant info, and messages."
 
   - task: "PATCH /api/alerts/:id - Update alert status"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/app/api/[[...path]]/route.js"
     stuck_count: 0
     priority: "medium"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Implemented with mock data. Updates alert status to resolved or active"
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: Successfully updates alert status to resolved. Returns 404 for invalid alert ID. Alert status modification working correctly."
 
   - task: "GET /api/settlements - List settlement records"
     implemented: true
