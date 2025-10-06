@@ -51,27 +51,42 @@ export default function OperatorDashboard() {
 
   const fetchDashboardData = async () => {
     setLoading(true);
-    try {
-      const [subscribersRes, collectionsRes, settlementsRes] = await Promise.all([
-        fetch('/api/operator/subscribers'),
-        fetch('/api/operator/collections'),
-        fetch('/api/operator/settlements')
+    // Demo data
+    setTimeout(() => {
+      setSubscribers([
+        { id: 'SUB-001', name: 'Rajesh Kumar', phone: '+91 98765 43210', email: 'rajesh@email.com', status: 'active', plan: 'Premium Cable + Internet (₹599)', expiry_date: '2024-11-15', days_until_expiry: 10, last_payment: '2024-10-15', payment_method: 'UPI AutoPay', risk_level: 'low' },
+        { id: 'SUB-002', name: 'Priya Sharma', phone: '+91 87654 32109', email: 'priya@email.com', status: 'expired', plan: 'Basic Cable (₹299)', expiry_date: '2024-10-28', days_until_expiry: -8, last_payment: '2024-09-28', payment_method: 'Cash', risk_level: 'high' },
+        { id: 'SUB-003', name: 'Amit Patel', phone: '+91 76543 21098', email: 'amit@email.com', status: 'active', plan: 'Internet Only (₹399)', expiry_date: '2024-11-20', days_until_expiry: 15, last_payment: '2024-10-20', payment_method: 'Credit Card', risk_level: 'medium' },
+        { id: 'SUB-004', name: 'Sunita Gupta', phone: '+91 65432 10987', email: 'sunita@email.com', status: 'active', plan: 'Premium Cable + Internet (₹599)', expiry_date: '2024-11-08', days_until_expiry: 3, last_payment: '2024-10-08', payment_method: 'UPI', risk_level: 'high' },
+        { id: 'SUB-005', name: 'Vikram Singh', phone: '+91 54321 09876', email: 'vikram@email.com', status: 'active', plan: 'Sports Package (₹899)', expiry_date: '2024-12-01', days_until_expiry: 26, last_payment: '2024-11-01', payment_method: 'UPI AutoPay', risk_level: 'low' }
       ]);
-
-      const [subscribersData, collectionsData, settlementsData] = await Promise.all([
-        subscribersRes.json(),
-        collectionsRes.json(),
-        settlementsRes.json()
-      ]);
-
-      setSubscribers(subscribersData.data);
-      setCollections(collectionsData.data);
-      setSettlements(settlementsData.data);
-    } catch (error) {
-      console.error('Error fetching dashboard data:', error);
-    } finally {
+      setCollections({
+        today: { collected: 45000, pending: 25000, target: 70000, collection_rate: 64.3 },
+        week: { collected: 285000, pending: 115000, target: 400000, collection_rate: 71.3 },
+        month: { collected: 1250000, pending: 350000, target: 1600000, collection_rate: 78.1 },
+        daily_breakdown: [
+          { day: 'Mon', collected: 42000 },
+          { day: 'Tue', collected: 38000 },
+          { day: 'Wed', collected: 51000 },
+          { day: 'Thu', collected: 47000 },
+          { day: 'Fri', collected: 45000 },
+          { day: 'Sat', collected: 62000 },
+          { day: 'Sun', collected: 35000 }
+        ]
+      });
+      setSettlements({
+        pending_settlement: 125000,
+        next_settlement_date: '2024-11-10',
+        commission_earned: 18750,
+        commission_rate: 15,
+        settlement_history: [
+          { date: '2024-10-25', amount: 280000, commission: 42000 },
+          { date: '2024-10-10', amount: 320000, commission: 48000 },
+          { date: '2024-09-25', amount: 295000, commission: 44250 }
+        ]
+      });
       setLoading(false);
-    }
+    }, 1000);
   };
 
   const handleQuickAction = async (action, subscriber) => {

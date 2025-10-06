@@ -62,37 +62,51 @@ export default function SuperAdminDashboard() {
 
   const fetchDashboardData = async () => {
     setLoading(true);
-    try {
-      const [overviewRes, merchantsRes, alertsRes, settlementsRes, healthRes, merchantAnalyticsRes, verticalAnalyticsRes] = await Promise.all([
-        fetch('/api/analytics/overview'),
-        fetch('/api/merchants'),
-        fetch('/api/alerts?status=active'),
-        fetch('/api/settlements'),
-        fetch('/api/system-health'),
-        fetch('/api/analytics/merchants'),
-        fetch('/api/analytics/verticals')
+    // Demo data
+    setTimeout(() => {
+      setOverview({
+        total_merchants: 45,
+        active_merchants: 42,
+        pending_kyc: 3,
+        total_subscribers: 125000,
+        monthly_growth: 12.5,
+        total_tpv: 85000000,
+        active_alerts: 7
+      });
+      setMerchants([
+        { id: 1, name: 'CableNet Solutions', kyc_status: 'approved', vertical: 'Cable TV', active_subscribers: 15000, tpv: 25000000, churn_rate: 8.5, monthly_growth: 15, contact_email: 'admin@cablenet.com', contact_phone: '+91 98765 43210' },
+        { id: 2, name: 'FitZone Gyms', kyc_status: 'pending', vertical: 'Fitness', active_subscribers: 8500, tpv: 12000000, churn_rate: 12.3, monthly_growth: 8, contact_email: 'owner@fitzone.com', contact_phone: '+91 87654 32109' },
+        { id: 3, name: 'SpeedNet ISP', kyc_status: 'approved', vertical: 'Internet', active_subscribers: 22000, tpv: 35000000, churn_rate: 6.2, monthly_growth: 18, contact_email: 'support@speednet.in', contact_phone: '+91 76543 21098' }
       ]);
-
-      const overviewData = await overviewRes.json();
-      const merchantsData = await merchantsRes.json();
-      const alertsData = await alertsRes.json();
-      const settlementsData = await settlementsRes.json();
-      const healthData = await healthRes.json();
-      const merchantAnalyticsData = await merchantAnalyticsRes.json();
-      const verticalAnalyticsData = await verticalAnalyticsRes.json();
-
-      setOverview(overviewData.data);
-      setMerchants(merchantsData.data);
-      setAlerts(alertsData.data);
-      setSettlements(settlementsData.data);
-      setSystemHealth(healthData.data);
-      setMerchantAnalytics(merchantAnalyticsData.data);
-      setVerticalAnalytics(verticalAnalyticsData.data);
-    } catch (error) {
-      console.error('Error fetching dashboard data:', error);
-    } finally {
+      setAlerts([
+        { id: 1, type: 'fraud', merchant_name: 'CableNet Solutions', severity: 'high', message: 'Unusual payment pattern detected - 15 failed payments in last hour', created_at: '2024-11-05T10:30:00Z' },
+        { id: 2, type: 'churn', merchant_name: 'FitZone Gyms', severity: 'medium', message: 'Churn rate increased by 25% this week', created_at: '2024-11-05T09:15:00Z' }
+      ]);
+      setSettlements([
+        { id: 1, merchant_name: 'CableNet Solutions', amount: 2450000, transaction_count: 1250, status: 'completed', payout_date: '2024-11-01' },
+        { id: 2, merchant_name: 'SpeedNet ISP', amount: 3200000, transaction_count: 1800, status: 'processing', payout_date: '2024-11-05' }
+      ]);
+      setSystemHealth({
+        api_uptime: 99.8,
+        razorpay_status: 'operational',
+        supabase_status: 'operational',
+        avg_response_time: 145,
+        total_requests_today: 125000,
+        failed_requests_today: 23,
+        last_updated: new Date().toISOString()
+      });
+      setMerchantAnalytics([
+        { id: 1, name: 'SpeedNet ISP', vertical: 'Internet', tpv: 35000000, active_subscribers: 22000, health_score: 92 },
+        { id: 2, name: 'CableNet Solutions', vertical: 'Cable TV', tpv: 25000000, active_subscribers: 15000, health_score: 88 },
+        { id: 3, name: 'FitZone Gyms', vertical: 'Fitness', tpv: 12000000, active_subscribers: 8500, health_score: 75 }
+      ]);
+      setVerticalAnalytics([
+        { name: 'Cable TV', tpv: 45000000, subscribers: 35000, avg_churn: 8.2, avg_growth: 12 },
+        { name: 'Internet', tpv: 52000000, subscribers: 42000, avg_churn: 6.8, avg_growth: 15 },
+        { name: 'Fitness', tpv: 18000000, subscribers: 15000, avg_churn: 14.5, avg_growth: 8 }
+      ]);
       setLoading(false);
-    }
+    }, 1000);
   };
 
   const handleKycAction = async (merchantId, action) => {

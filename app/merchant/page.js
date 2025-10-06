@@ -59,36 +59,88 @@ export default function MerchantDashboard() {
 
   const fetchDashboardData = async () => {
     setLoading(true);
-    try {
-      const [collectionsRes, retryRes, churnRes, lcoRes, remindersRes, forecastRes] = await Promise.all([
-        fetch('/api/merchant-admin/collections'),
-        fetch('/api/merchant-admin/retry-analytics'),
-        fetch('/api/merchant-admin/churn-predictions'),
-        fetch('/api/merchant-admin/lco-performance'),
-        fetch('/api/merchant-admin/reminders'),
-        fetch('/api/merchant-admin/revenue-forecast')
+    // Demo data
+    setTimeout(() => {
+      setCollections({
+        total_collected: 2450000,
+        collection_rate: 87.5,
+        total_due: 2800000,
+        recovery_rate: 65.2,
+        total_recovered: 450000,
+        total_failed: 350000,
+        today_collections: 125000,
+        monthly_trend: [
+          { month: 'Jul', collected: 2200000, failed: 280000, recovered: 180000 },
+          { month: 'Aug', collected: 2350000, failed: 320000, recovered: 220000 },
+          { month: 'Sep', collected: 2180000, failed: 380000, recovered: 280000 },
+          { month: 'Oct', collected: 2450000, failed: 350000, recovered: 450000 }
+        ]
+      });
+      setRetryAnalytics({
+        success_rate: 68.5,
+        total_retries: 1250,
+        successful_retries: 856,
+        avg_retry_time: 2.5,
+        failure_reasons: [
+          { reason: 'Insufficient Balance', count: 450, percentage: 36, recovery_rate: 72 },
+          { reason: 'Card Expired', count: 280, percentage: 22, recovery_rate: 45 },
+          { reason: 'Technical Error', count: 320, percentage: 26, recovery_rate: 85 },
+          { reason: 'User Cancelled', count: 200, percentage: 16, recovery_rate: 25 }
+        ],
+        retry_timing: [
+          { hour: '9 AM', success_rate: 75 },
+          { hour: '12 PM', success_rate: 82 },
+          { hour: '3 PM', success_rate: 68 },
+          { hour: '6 PM', success_rate: 71 },
+          { hour: '9 PM', success_rate: 65 }
+        ]
+      });
+      setChurnPredictions([
+        { id: 1, subscriber_name: 'Amit Sharma', subscriber_id: 'SUB-001', plan_amount: 599, risk_score: 85, risk_level: 'high', predicted_churn_date: '2024-11-20', factors: ['Payment Failures', 'Service Complaints', 'Usage Drop'], recommended_action: 'Offer 20% discount and priority support' },
+        { id: 2, subscriber_name: 'Priya Patel', subscriber_id: 'SUB-002', plan_amount: 799, risk_score: 72, risk_level: 'medium', predicted_churn_date: '2024-12-05', factors: ['Late Payments', 'Competitor Activity'], recommended_action: 'Send retention offer with upgraded features' }
       ]);
-
-      const [collectionsData, retryData, churnData, lcoData, remindersData, forecastData] = await Promise.all([
-        collectionsRes.json(),
-        retryRes.json(),
-        churnRes.json(),
-        lcoRes.json(),
-        remindersRes.json(),
-        forecastRes.json()
+      setLcoPerformance([
+        { id: 1, name: 'Rajesh Kumar', area: 'Sector 15, Noida', rank: 1, total_subscribers: 850, collection_rate: 94.5, avg_collection_time: 2.1, monthly_revenue: 425000, churn_rate: 4.2 },
+        { id: 2, name: 'Suresh Gupta', area: 'Lajpat Nagar, Delhi', rank: 2, total_subscribers: 720, collection_rate: 91.2, avg_collection_time: 2.8, monthly_revenue: 380000, churn_rate: 6.1 },
+        { id: 3, name: 'Vikram Singh', area: 'Bandra West, Mumbai', rank: 3, total_subscribers: 950, collection_rate: 89.8, avg_collection_time: 3.2, monthly_revenue: 520000, churn_rate: 7.8 }
       ]);
-
-      setCollections(collectionsData.data);
-      setRetryAnalytics(retryData.data);
-      setChurnPredictions(churnData.data);
-      setLcoPerformance(lcoData.data);
-      setReminders(remindersData.data);
-      setRevenueForecast(forecastData.data);
-    } catch (error) {
-      console.error('Error fetching dashboard data:', error);
-    } finally {
+      setReminders({
+        by_channel: [
+          { channel: 'SMS', sent: 2500, conversions: 425, rate: 17, cost_per_conversion: 12 },
+          { channel: 'WhatsApp', sent: 1800, conversions: 540, rate: 30, cost_per_conversion: 8 },
+          { channel: 'Email', sent: 3200, conversions: 384, rate: 12, cost_per_conversion: 15 },
+          { channel: 'Voice Call', sent: 850, conversions: 340, rate: 40, cost_per_conversion: 25 }
+        ],
+        by_timing: [
+          { time: '9 AM', rate: 22 },
+          { time: '12 PM', rate: 28 },
+          { time: '3 PM', rate: 18 },
+          { time: '6 PM', rate: 35 },
+          { time: '9 PM', rate: 25 }
+        ]
+      });
+      setRevenueForecast({
+        current_month_actual: 2450000,
+        current_month_forecast: 2650000,
+        next_month_forecast: 2850000,
+        forecast_confidence: 87,
+        monthly_forecast: [
+          { month: 'Jul', actual: 2200000, forecast: 2180000 },
+          { month: 'Aug', actual: 2350000, forecast: 2320000 },
+          { month: 'Sep', actual: 2180000, forecast: 2250000 },
+          { month: 'Oct', actual: 2450000, forecast: 2400000 },
+          { month: 'Nov', actual: null, forecast: 2650000 },
+          { month: 'Dec', actual: null, forecast: 2850000 }
+        ],
+        factors: [
+          { factor: 'Seasonal Growth', impact: '+12%', confidence: 85 },
+          { factor: 'New Subscribers', impact: '+8%', confidence: 92 },
+          { factor: 'Churn Rate', impact: '-5%', confidence: 78 },
+          { factor: 'Price Changes', impact: '+3%', confidence: 65 }
+        ]
+      });
       setLoading(false);
-    }
+    }, 1000);
   };
 
   const formatCurrency = (amount) => {
