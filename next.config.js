@@ -1,6 +1,8 @@
 const nextConfig = {
   output: 'export',
   trailingSlash: true,
+  basePath: process.env.NODE_ENV === 'production' ? '/subv' : '',
+  assetPrefix: process.env.NODE_ENV === 'production' ? '/subv' : '',
   images: {
     unoptimized: true,
   },
