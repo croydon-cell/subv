@@ -622,6 +622,6 @@ export default function SuperAdminDashboard() {
           </TabsContent>
         </Tabs>
       </div>
-    </div>
+    </DashboardLayout>
   );
 }
