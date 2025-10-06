@@ -1,8 +1,6 @@
 const nextConfig = {
   output: 'export',
   trailingSlash: true,
-  basePath: '/subv',
-  assetPrefix: '/subv',
   images: {
     unoptimized: true,
   },
