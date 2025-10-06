@@ -143,84 +143,61 @@ export default function SuperAdminDashboard() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-center">
-          <RefreshCw className="h-8 w-8 animate-spin mx-auto mb-4" />
-          <p className="text-muted-foreground">Loading dashboard...</p>
+      <DashboardLayout currentRole="super_admin">
+        <div className="flex items-center justify-center h-screen">
+          <div className="text-center">
+            <RefreshCw className="h-8 w-8 animate-spin mx-auto mb-4 text-blue-600" />
+            <p className="text-slate-600">Loading dashboard...</p>
+          </div>
         </div>
-      </div>
+      </DashboardLayout>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <div className="border-b bg-card">
-        <div className="container mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold">SubversePay Super Admin</h1>
-              <p className="text-muted-foreground mt-1">Platform oversight and merchant management</p>
-            </div>
-            <Button onClick={fetchDashboardData} variant="outline">
-              <RefreshCw className="h-4 w-4 mr-2" />
-              Refresh
-            </Button>
+    <DashboardLayout currentRole="super_admin">
+      <div className="p-8 space-y-8">
+        {/* Header */}
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+              Super Admin Dashboard
+            </h1>
+            <p className="text-slate-600 mt-2">Platform oversight and merchant management</p>
           </div>
+          <Button onClick={fetchDashboardData} className="bg-gradient-to-r from-blue-600 to-indigo-600">
+            <RefreshCw className="h-4 w-4 mr-2" />
+            Refresh
+          </Button>
         </div>
-      </div>
 
-      <div className="container mx-auto px-6 py-8">
         {/* Overview Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Merchants</CardTitle>
-              <Users className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{overview?.total_merchants || 0}</div>
-              <p className="text-xs text-muted-foreground mt-1">
-                {overview?.active_merchants || 0} active • {overview?.pending_kyc || 0} pending KYC
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Subscribers</CardTitle>
-              <Users className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{formatNumber(overview?.total_subscribers || 0)}</div>
-              <p className="text-xs text-green-600 mt-1 flex items-center">
-                <TrendingUp className="h-3 w-3 mr-1" />
-                +{overview?.monthly_growth || 0}% this month
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total TPV</CardTitle>
-              <DollarSign className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{formatCurrency(overview?.total_tpv || 0)}</div>
-              <p className="text-xs text-muted-foreground mt-1">Total payment volume</p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Active Alerts</CardTitle>
-              <AlertTriangle className="h-4 w-4 text-orange-500" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{overview?.active_alerts || 0}</div>
-              <p className="text-xs text-muted-foreground mt-1">Requires attention</p>
-            </CardContent>
-          </Card>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <StatsCard
+            title="Total Merchants"
+            value={overview?.total_merchants || 0}
+            icon={Users}
+            subtitle={`${overview?.active_merchants || 0} active • ${overview?.pending_kyc || 0} pending`}
+            gradient={true}
+          />
+          <StatsCard
+            title="Total Subscribers"
+            value={formatNumber(overview?.total_subscribers || 0)}
+            icon={Users}
+            trendValue={overview?.monthly_growth || 0}
+          />
+          <StatsCard
+            title="Total TPV"
+            value={formatCurrency(overview?.total_tpv || 0)}
+            icon={DollarSign}
+            subtitle="Total payment volume"
+          />
+          <StatsCard
+            title="Active Alerts"
+            value={overview?.active_alerts || 0}
+            icon={AlertTriangle}
+            subtitle="Requires attention"
+          />
         </div>
 
         {/* Main Content Tabs */}
