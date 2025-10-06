@@ -36,28 +36,80 @@ export default function CustomerDashboard() {
 
   const fetchDashboardData = async () => {
     setLoading(true);
-    try {
-      const [profileRes, paymentsRes, remindersRes] = await Promise.all([
-        fetch('/api/customer/profile'),
-        fetch('/api/customer/payments'),
-        fetch('/api/customer/reminders')
-      ]);
+    // Demo data for showcase
+    const demoProfile = {
+      name: 'Rajesh Kumar',
+      email: 'rajesh.kumar@email.com',
+      phone: '+91 98765 43210',
+      subscriber_id: 'SUB-2024-001234',
+      status: 'active',
+      amount_due: 599,
+      days_remaining: 5,
+      next_billing_date: '2024-11-15',
+      expiry_date: '2024-11-10',
+      auto_pay_enabled: true,
+      plan: {
+        name: 'Premium Cable + Internet',
+        amount: 599,
+        features: ['150+ HD Channels', '100 Mbps Internet', '24/7 Support', 'Free Installation']
+      }
+    };
 
-      const [profileData, paymentsData, remindersData] = await Promise.all([
-        profileRes.json(),
-        paymentsRes.json(),
-        remindersRes.json()
-      ]);
+    const demoPayments = [
+      {
+        id: 1,
+        amount: 599,
+        status: 'success',
+        description: 'Monthly subscription - October 2024',
+        date: '2024-10-15',
+        method: 'UPI AutoPay',
+        transaction_id: 'TXN240001234567'
+      },
+      {
+        id: 2,
+        amount: 599,
+        status: 'failed',
+        description: 'Monthly subscription - September 2024',
+        date: '2024-09-15',
+        method: 'UPI',
+        failure_reason: 'Insufficient balance',
+        retry_status: 'Retried successfully after 2 hours'
+      },
+      {
+        id: 3,
+        amount: 599,
+        status: 'success',
+        description: 'Monthly subscription - August 2024',
+        date: '2024-08-15',
+        method: 'Credit Card',
+        transaction_id: 'TXN240001234566'
+      }
+    ];
 
-      setProfile(profileData.data);
-      setPayments(paymentsData.data);
-      setReminders(remindersData.data);
-      setAutoPayEnabled(profileData.data.auto_pay_enabled);
-    } catch (error) {
-      console.error('Error fetching dashboard data:', error);
-    } finally {
+    const demoReminders = [
+      {
+        id: 1,
+        status: 'sent',
+        channel: 'SMS',
+        message: 'Your subscription expires in 5 days. Renew now to avoid service interruption.',
+        date: '2024-11-05'
+      },
+      {
+        id: 2,
+        status: 'pending',
+        channel: 'WhatsApp',
+        message: 'Payment due reminder - ₹599 due on Nov 10th',
+        date: '2024-11-03'
+      }
+    ];
+
+    setTimeout(() => {
+      setProfile(demoProfile);
+      setPayments(demoPayments);
+      setReminders(demoReminders);
+      setAutoPayEnabled(demoProfile.auto_pay_enabled);
       setLoading(false);
-    }
+    }, 1000);
   };
 
   const handleToggleAutoPay = async () => {
