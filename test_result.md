@@ -137,39 +137,48 @@ backend:
 
   - task: "GET /api/merchants/:id - Get merchant details by ID"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/app/api/[[...path]]/route.js"
     stuck_count: 0
     priority: "medium"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Implemented with mock data. Returns single merchant object or 404 if not found"
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: Successfully retrieved merchant by valid ID. Correctly returns 404 for invalid merchant ID. Error handling works properly."
 
   - task: "PATCH /api/merchants/:id/kyc - Approve/reject merchant KYC"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/app/api/[[...path]]/route.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Implemented with mock data. Updates KYC status to approved or rejected"
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: Successfully approves and rejects KYC status. Updates merchant data correctly. Returns 404 for invalid merchant ID. All KYC operations working properly."
 
   - task: "POST /api/merchants - Create new merchant"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/app/api/[[...path]]/route.js"
     stuck_count: 0
     priority: "medium"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Implemented with mock data. Creates new merchant with pending KYC status"
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: Successfully creates new merchant with UUID. Sets default values correctly (pending KYC, 0 metrics). Returns proper 201 status and merchant data."
 
   - task: "GET /api/analytics/merchants - Merchant performance analytics"
     implemented: true
